@@ -1,0 +1,7 @@
+# Ignore the compiled binary executable
+web-analyzer
+*.exe
+
+# Ignore OS specific files
+.DS_Store
+Thumbs.db

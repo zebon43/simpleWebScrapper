@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Webpage Analyzer</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; color: #333; }
+        .container { border: 1px solid #e0e0e0; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        input[type="text"] { width: 75%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+        button { padding: 12px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .error { color: #721c24; background-color: #f8d7da; padding: 15px; border-radius: 4px; margin-top: 20px; border: 1px solid #f5c6cb; }
+        .results { margin-top: 30px; background: #f9f9f9; padding: 20px; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #ddd; }
+        th { background-color: #f1f1f1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Webpage Analyzer</h1>
+        <form method="POST" action="/">
+            <input type="text" name="url" placeholder="https://www.google.com" required>
+            <button type="submit">Analyze</button>
+        </form>
+
+        {{if .Error}}
+            <div class="error">
+                <strong>Analysis Failed:</strong> {{.Error.Error}}
+            </div>
+        {{else if .Result}}
+            <div class="results">
+                <h2>Results for: {{.Result.URL}}</h2>
+                <table>
+                    <tr><th>Requirement Metric</th><th>Analysis Value</th></tr>
+                    <tr><td>HTML Version</td><td>{{.Result.HTMLVersion}}</td></tr>
+                    <tr><td>Page Title</td><td>{{.Result.Title}}</td></tr>
+                    <tr><td>Contains Login Form</td><td>{{if .Result.HasLoginForm}}Yes{{else}}No{{end}}</td></tr>
+                    <tr><td>Internal Links</td><td>{{.Result.InternalLinks}}</td></tr>
+                    <tr><td>External Links</td><td>{{.Result.ExternalLinks}}</td></tr>
+                    <tr><td>Inaccessible Links</td><td><span style="color:red">{{.Result.Inaccessible}}</span></td></tr>
+                </table>
+
+                <h3>Headings Breakdown</h3>
+                <ul>
+                    {{range $level, $count := .Result.Headings}}
+                        <li><strong>{{$level}}:</strong> {{$count}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        {{end}}
+    </div>
+</body>
+</html>
