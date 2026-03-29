@@ -1,2 +1,2 @@
 # simpleWebScrapper
-A tool scrap simple website details.
+A tool for scraping simple website details.
